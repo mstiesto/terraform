@@ -1,3 +1,5 @@
+data "aws_route53_zone" "zones" {}
+
 resource "aws_route53_record" "mx_records" {
   for_each = var.zone_names
 
