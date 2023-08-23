@@ -1,9 +1,21 @@
-resource "aws_route53_record" "dns_records" {
-  count = length(var.dns_records)
+resource "aws_route53_record" "mx_records" {
+  for_each = var.zone_names
 
-  zone_id = var.dns_records[count.index].zone_id
-  name    = var.dns_records[count.index].name
-  type    = var.dns_records[count.index].type
-  ttl     = var.dns_records[count.index].ttl
-  records = var.dns_records[count.index].records
+  zone_id = data.aws_route53_zone.zones[each.key].zone_id
+  name    = each.value
+  type    = "MX"
+  ttl     = 120
+
+  records = var.mx_records[each.key]
+}
+
+resource "aws_route53_record" "txt_records" {
+  for_each = var.zone_names
+
+  zone_id = data.aws_route53_zone.zones[each.key].zone_id
+  name    = each.value
+  type    = "TXT"
+  ttl     = 120
+
+  records = var.txt_records[each.key]
 }
