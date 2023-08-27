@@ -1,4 +1,4 @@
-data "aws_route53_zone" "zones" {
-  for_each = {for zone_name in var.zone_names: zone_name => zone_name }  
-  name     = each.value
+data "aws_route53_zone" "all_zones" {
+  for_each = var.records
+    name = each.key
 }
